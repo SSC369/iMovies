@@ -10,12 +10,10 @@ import { v4 } from "uuid";
 import { render } from "../../host";
 import { useNavigate } from "react-router-dom";
 import { LuHistory } from "react-icons/lu";
+import useSWR from "swr";
 import "./style.scss";
 
 const Bookings = () => {
-  const [bookings, setBookings] = useState([]);
-
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const jwtToken = Cookies.get("jwtToken");
@@ -34,27 +32,27 @@ const Bookings = () => {
     closeOnClick: true,
   };
 
-  const getBookingsData = async () => {
+  const getBookingsData = async (url) => {
     try {
-      const host = `${render}/api/bookings/getbookings`;
       const jwtToken = Cookies.get("jwtToken");
 
-      const { data } = await axios.get(host, {
+      const { data } = await axios.get(url, {
         headers: {
           "auth-token": jwtToken,
         },
       });
       if (data.status) {
-        setBookings(data.bookings);
-        setLoading(false);
+        return data.bookings;
       }
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getBookingsData();
-  }, []);
+  const {
+    data: bookings,
+    loading,
+    mutate,
+  } = useSWR(`${render}/api/bookings/getbookings`, getBookingsData);
 
   const handleCancel = async (bookingId, balcony, middle, lower) => {
     try {
@@ -71,9 +69,7 @@ const Bookings = () => {
       });
       if (data.status) {
         toast.success(data.msg, toastOptions);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        mutate();
       } else {
         toast.error(data.msg, toastOptions);
       }
@@ -100,7 +96,7 @@ const Bookings = () => {
         </div>
       ) : (
         <div className="bookingsContainer">
-          {bookings.length == 0 ? (
+          {bookings?.length == 0 ? (
             renderEmptyBookings()
           ) : (
             <>
@@ -136,7 +132,8 @@ const Bookings = () => {
                   const showCancelable = () => {
                     const today = new Date();
                     const showDay = new Date(showdate);
-                    if (showDay > today) {
+
+                    if (showDay.getDate() >= today.getDate()) {
                       return true;
                     } else {
                       return false;
