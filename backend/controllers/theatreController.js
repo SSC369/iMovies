@@ -83,6 +83,9 @@ module.exports.editTheatre = async (req, res) => {
 
     const { theatreId } = req.params;
 
+    //check if theatre is already existed
+    const lowerCaseName = theatreName.toLowerCase();
+
     const adminEmail = req?.user?.adminDetails?.adminEmail;
 
     await Theatre.updateOne(
