@@ -83,20 +83,6 @@ module.exports.editTheatre = async (req, res) => {
 
     const { theatreId } = req.params;
 
-    //check if theatre is already existed
-    const lowerCaseName = theatreName.toLowerCase();
-    const findTheatre = await Theatre.findOne({
-      theatreName: lowerCaseName,
-      location,
-    });
-
-    if (findTheatre) {
-      return res.json({
-        status: false,
-        msg: "Theatre  is already Registered!",
-      });
-    }
-
     const adminEmail = req?.user?.adminDetails?.adminEmail;
 
     await Theatre.updateOne(
