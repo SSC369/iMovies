@@ -88,7 +88,21 @@ module.exports.editProfile = async (req, res) => {
         },
       }
     );
-    res.status(200).json({ status: true, msg: "Profile updated successfully" });
+
+    const userDetails = {
+      name,
+      email,
+    };
+
+    const secretKey = "SSC";
+    const payload = {
+      userDetails,
+    };
+    const jwtToken = await jwt.sign(payload, secretKey);
+
+    res
+      .status(200)
+      .json({ status: true, msg: "Profile updated successfully", jwtToken });
   } catch (error) {
     console.log(error);
     return res.json({ msg: "Server issue :(", status: false });

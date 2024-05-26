@@ -400,7 +400,7 @@ const AddMovie = () => {
               color: "white",
             }}
           >
-            Available span
+            Available <span style={{ color: "crimson" }}>Movies</span>
           </h1>
           <AdminMovies
             movies={movies}

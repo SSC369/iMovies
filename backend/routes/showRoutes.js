@@ -2,7 +2,6 @@ const router = require("express").Router();
 const {
   addShow,
   getMovieShows,
-
   updateShowTickets,
   getShow,
   deleteShow,

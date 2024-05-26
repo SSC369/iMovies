@@ -12,7 +12,6 @@ import useFetch from "../../hooks/useFetch";
 import Loader from "../../components/loader/Loader";
 import Genres from "../../components/genres/Genres";
 import axios from "axios";
-import { MdEdit } from "react-icons/md";
 import { render } from "../../host";
 import Reviews from "../../components/reviews/Reviews";
 

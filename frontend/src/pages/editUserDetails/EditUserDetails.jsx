@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import "./style.scss";
@@ -73,6 +73,7 @@ const EditUserDetails = () => {
       const { data } = response;
 
       if (data.status) {
+        Cookies.set("jwtToken", data.jwtToken);
         toast.success(data.msg, toastOptions);
         setUserData({
           name: "",

@@ -92,7 +92,6 @@ const AddShow = () => {
             showdate: "",
             movieId: "",
           });
-          navigate("/admin");
         } else {
           toast.error(msg, toastOptions);
         }
