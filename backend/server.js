@@ -19,6 +19,10 @@ app.listen(3000, () => {
   console.log("Server is running on 3000 port");
 });
 
+app.get("/", (req, res) => {
+  res.send("Hi MovieMate");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/theatre", theatreRoutes);
