@@ -57,14 +57,21 @@ const EditUserDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { password, name } = userData;
-
+    const jwtToken = Cookies.get("jwtToken");
     if (handleValidation()) {
       const host = `${render}/api/auth/editprofile`;
-
-      const response = await axios.put(host, {
-        name,
-        password,
-      });
+      const response = await axios.put(
+        host,
+        {
+          name,
+          password,
+        },
+        {
+          headers: {
+            "auth-token": jwtToken,
+          },
+        }
+      );
       const { data } = response;
 
       if (data.status) {
