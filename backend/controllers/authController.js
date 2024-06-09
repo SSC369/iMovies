@@ -75,7 +75,8 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.editProfile = async (req, res) => {
   try {
-    const { name, password, email } = req.body;
+    const { name, password } = req.body;
+    const { email } = req.user.userDetails;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     await User.updateOne(
@@ -84,7 +85,6 @@ module.exports.editProfile = async (req, res) => {
         $set: {
           name,
           password: hashedPassword,
-          email: email,
         },
       }
     );

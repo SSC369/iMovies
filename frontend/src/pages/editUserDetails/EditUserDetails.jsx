@@ -12,7 +12,6 @@ const EditUserDetails = () => {
   const [userData, setUserData] = useState({
     name: "",
     password: "",
-    email: "",
     confirmPassword: "",
   });
   const [showPass, setShowPass] = useState(false);
@@ -32,7 +31,7 @@ const EditUserDetails = () => {
   };
 
   const handleValidation = () => {
-    const { password, confirmPassword, name, email } = userData;
+    const { password, confirmPassword, name } = userData;
     if (password !== confirmPassword) {
       toast.error(
         "Password and confirm password should be same.",
@@ -51,16 +50,13 @@ const EditUserDetails = () => {
         toastOptions
       );
       return false;
-    } else if (email === "") {
-      toast.error("Email is required.", toastOptions);
-      return false;
     }
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password, name } = userData;
+    const { password, name } = userData;
 
     if (handleValidation()) {
       const host = `${render}/api/auth/editprofile`;
@@ -68,7 +64,6 @@ const EditUserDetails = () => {
       const response = await axios.put(host, {
         name,
         password,
-        email,
       });
       const { data } = response;
 
@@ -78,7 +73,6 @@ const EditUserDetails = () => {
         setUserData({
           name: "",
           password: "",
-          email: "",
           confirmPassword: "",
         });
       } else {
@@ -105,18 +99,6 @@ const EditUserDetails = () => {
               className="input"
               onChange={(e) => onChange(e)}
               value={userData.name}
-            />
-          </div>
-          <div className="inputContainer">
-            <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="input"
-              onChange={(e) => onChange(e)}
-              value={userData.email}
             />
           </div>
 
